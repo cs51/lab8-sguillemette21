@@ -124,7 +124,7 @@ decide how to implement this.
   let add_listener (evt : 'a event) (listener : 'a -> unit) : id =
     let id = new_id () in 
     let current_evt = !evt in 
-    evt := {id = id; action = listener} :: current_evt in id 
+    let _ = evt := {id = id; action = listener} :: current_evt in id 
 
 (*......................................................................
 Exercise 2: Write remove_listener, which, given an id and an event,
@@ -224,7 +224,7 @@ by registering appropriate listeners, one for each news network,
 waiting for the publish event.
 ......................................................................*)
 
-let receive_report (s : string) -> unit = 
+let receive_report (s : string) : unit = 
   let id1 = WEvent.add_listener publish (fun () -> fakeNewsNetwork s) in 
   let id2 = WEvent.add_listener publish (fun () -> buzzFake s) in () ;;
 
@@ -233,7 +233,7 @@ Exercise 10: Register the receieve_report listener to listen for the
 newswire event.
 ......................................................................*)
 
-let _ = WEvent.add_listener newswire receieve_report ;;
+let _ = WEvent.add_listener newswire receive_report ;;
 
 (* Here are some new headlines to use for testing this part. *)
 
